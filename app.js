@@ -1,46 +1,34 @@
 console.log("Let's get this party started!");
 
-async function getData(search) {
+$('form').on('submit', async function(e) {
+    e.preventDefault();
+
+    let search = $('#input').val();
+
     const response = await axios.get('http://api.giphy.com/v1/gifs/search', { params: 
     {api_key: 'NXUw3cq8ctWgrRcocDkpTnCBbxEGXmBR',
      q: search}});
 
     const gifList = response.data.data;
-    console.log("test");
-    console.log("Response: ", response.data);
-
     const listLen = gifList.length;
-
-    console.log(listLen);
-
     const gifNum = getRandom(listLen);
-    console.log(gifNum);
+    const theGif = response.data.data[gifNum].images.original.url
 
-    let count = 0;
-    
-    for (let gif of gifList) {
-        console.log(count)
-        if (count === gifNum) {
-            console.log("Loop, gif: ", gif);
-            console.log("Loop, gif.url: ", gif.url);
-            count = 0;
-            showGif(gif.url);
-            break;
-        }
-        count = count + 1;
-    }
-}
+   showGif(theGif);
+
+   $('#input').val = '';
+});
 
 const getRandom = (qty) => {
     return Math.floor(Math.random() * qty);
 }
 
-function showGif(resGif) {
-    const gifLoc = document.getElementById('gif-spot');
-    const imgElement = document.createElement('IMG');
-    imgElement.src = `${resGif}`;
-    // const imgELement = document.createElement('IMG');
-    console.log("showGif, imgElement: ", imgElement);
-    console.log("showGif, resGif: ", resGif);
-    gifLoc.appendChild(imgElement);
+const showGif = (resGif) => {
+    $('#gif-spot').append(`<img src="${resGif}">`);
 }
+
+$('#remove').on('click', function(e) {
+    e.preventDefault();
+
+    $('#gif-spot').empty();
+});
