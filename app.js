@@ -6,10 +6,11 @@ async function getData(search) {
      q: search}});
 
     const gifList = response.data.data;
-    // const gif = gifList[0];
-    // console.log(gif);
+    console.log("test");
+    console.log("Response: ", response.data);
 
     const listLen = gifList.length;
+
     console.log(listLen);
 
     const gifNum = getRandom(listLen);
